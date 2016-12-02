@@ -1,15 +1,11 @@
 ## Story Book for Shared Components.
 
-This app setup has the support for [React Storybook](https://github.com/kadirahq/react-storybook). It allows to develop and test React UI components rapidly.
+This app setup has the support for [Webpack 2.0](https://github.com/rajendrav5/webpack2.0). It allows to generate different chunks for commons, page levels, library level bundles and separate bundle for css and optimizes the bundle with tree-shaking, minification and other optimisations.
 
 ### Usage
 
 ```
-npm install
+npm start
 ```
 
-Then open `http://localhost:3000` on your browser. For more information visit [React Storybook](https://github.com/kadirahq/react-storybook) repo.
-
-![React Storybook in action](.github/demo.png)
-
-> This app is forked from the [Redux examples directory](https://github.com/reactjs/redux/tree/master/examples/todomvc) and added support for React Storybook.
+Then open `http://localhost:6556` on your browser.
