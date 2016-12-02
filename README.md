@@ -1,4 +1,4 @@
-## Story Book for Shared Components.
+## Webpack Bundler
 
 ![Webpack 2.0](https://raw.githubusercontent.com/rajendrav5/webpack2.0/master/webpack2.0.png)
 
