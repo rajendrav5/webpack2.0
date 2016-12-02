@@ -1,1 +1,2 @@
-export {default} from './JInput';
+import JInput from './JInput';
+export default JInput;

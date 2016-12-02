@@ -1,12 +1,12 @@
-@import 'colors.css';
+@import '../../styles/colors.css';
 
 .test{
 	border : 1px solid;
 	color : var(--colorBlue);
 	margin: 25px;
 
-	& .td{
+	.td{
 		color: black;
-		border : 1px solid var(--colorBlue);
+		border : 1px solid blue;
 	}
 }

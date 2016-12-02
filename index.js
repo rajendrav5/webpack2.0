@@ -1,12 +1,11 @@
-import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import JForm from './components/JForm';
-import JButton from './components/JButton';
-import JCInput from './components/JInput';
-import JCTable from './components/JTable';
-import JCAutoSuggest from './components/JAutoSuggest';
+// import JButton from './components/JButton';
+// import JCInput from './components/JInput';
+// import JCTable from './components/JTable';
+// import JCAutoSuggest from './components/JAutoSuggest';
 import JCSelect from './components/JSelect';
 //import App from './containers/App'
 //import configureStore from './store/configureStore'
@@ -20,12 +19,7 @@ let optData = [
 ];
 render(
 	<div>
-		<JForm>
-			<JButton content="First Button" />
-			<JCTable />
-			<JCAutoSuggest />
-			<JCSelect options={optData}/>
-		</JForm>
+		<JCSelect options={optData}/>
 	</div>
 	,
   document.getElementById('root')

@@ -1,1 +1,2 @@
-export {default} from './JAutoSuggest';
+import JAutoSuggest from './JAutoSuggest';
+export default JAutoSuggest;

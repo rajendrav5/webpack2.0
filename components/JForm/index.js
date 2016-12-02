@@ -1,1 +1,2 @@
-export {default} from './JForm';
+import JForm from './JForm';
+export default JForm;
