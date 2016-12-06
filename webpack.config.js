@@ -25,25 +25,22 @@ if(process.argv[2]){
 }
 
 module.exports = {
-  devtool:"cheap-module-source-map",
-  entry: {
-    webpack: 'webpack-hot-middleware/client',
-    vendor : ['react','redux'],
-    app:'./index'
-  },
+  entry: [
+    'webpack-hot-middleware/client',
+    './index.js'
+  ],
   output: {
     path:path.resolve(__dirname,'dist'),
-    filename: '[name].bundle.js',
-    publicPath: '/static/',
-    library: 'shared'
+    filename: 'app.bundle.js',
+    publicPath: '/static/'
   },
   module: {
-    rules: [
+    loaders: [
       {
         test: /\.js$/,
         include: [path.resolve(__dirname,'/')],
         exclude: [path.resolve(__dirname,'/node_modules/')],
-        use: [ 'babel-loader' ]
+        loaders: [ 'babel-loader' ]
       },
       {
         test: /\.css?$/,
@@ -52,6 +49,12 @@ module.exports = {
         include: __dirname
       }
     ]
+  },
+  devtool:"inline-source-map",
+  devServer:{
+    hot: true,
+    contentBase: path.resolve(__dirname, 'dist'),
+    publicPath: '/'
   },
   plugins: environ.ENV['PROD'] ? [
     new webpack.optimize.OccurrenceOrderPlugin(),

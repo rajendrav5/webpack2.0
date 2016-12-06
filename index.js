@@ -1,3 +1,4 @@
+import one from './1.js';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -15,12 +16,17 @@ let optData = [
 				{display:"India",val:"ind"},
 				{display:"Austrlia",val:"aus"},
 				{display:"Asia Pacific",val:"APAC"},
-				{display:"Dallas",val:"ds"}
+				{display:"Dallas",val:"ds"},
+				{display:"Dallass",val:"dsasdf"}
 ];
-render(
-	<div>
-		<JCSelect options={optData}/>
-	</div>
-	,
-  document.getElementById('root')
-)
+const renderer = () => {
+	render(
+		<JCSelect options={optData} />,
+		document.getElementById('root')
+	);
+};
+
+renderer();
+if(module && module.hot){
+	module.hot.accept('./components/JSelect',renderer);
+}
