@@ -1,16 +1,46 @@
 var webpack = require('webpack')
 var webpackDevMiddleware = require('webpack-dev-middleware')
 var webpackHotMiddleware = require('webpack-hot-middleware')
-var config = require('./webpack.config')
+var WPConfig = null;
+var config = require('./webpack.config');
 
+/**
+ * Environment discussions starts *
+ **/
+var environ = require('./env.config');
+if(process.argv[2]){
+    var env = process.argv[2].split('=')[1];
+    if(env in environ.ENV){
+        environ.ENV[env] = true;
+    }else {
+        console.error('=>>>>> ..... Specified ENV does not exist, falling back to default mode DEV!!!!!');
+    }
+}else{
+    environ.ENV.DEV = true;
+}
+
+if(environ.ENV.DEV) {
+    WPConfig = require('./Webpack/webp.devconfig');
+}
+else if(environ.ENV.QA){
+}
+else if(environ.ENV.prod) {
+    WPConfig = require('./Webpack/webp.prodconfig');
+}else{
+    WPConfig = require('./Webpack/webp.devconfig');
+}
+
+/**
+ * Environment discussion Ends Here *
+ **/
 
 
 var app = new (require('express'))()
-var port = 6556
+var port = 6556;
 var compiler = webpack(config)
 
 
-app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
+app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: WPConfig.output.publicPath }))
 app.use(webpackHotMiddleware(compiler))
 
 app.get("/", function(req, res) {

@@ -11,8 +11,8 @@ class JSelect extends Component{
 	}
 	render(){
 		return <div>
-		Yo
-			<select className={styles.first} onChange={this.optionChanged} data='raj'>
+		Yo!
+			<select className={styles.first} onChange={this.optionChanged}>
 				 {this.props.options.map(function(i,v){
 				 	return <option value={i.val} key={i.val} className={styles['first']}>{i.display}</option>
 				 })}

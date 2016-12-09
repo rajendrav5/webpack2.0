@@ -1,0 +1,10 @@
+.cardWrapper{
+    display: inline-block;
+    position: relative;
+    padding: .0625rem 0 0;
+    border: .0625rem solid #ccc;
+    background-color: #fff;
+    box-shadow: .0625rem .0625rem .125rem 0 rgba(0,0,0,.15);
+    border-radius: .1875rem;
+    margin: 10px;
+}

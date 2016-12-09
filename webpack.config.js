@@ -25,13 +25,13 @@ if(process.argv[2]){
 }
 
 module.exports = {
-  entry: [
-    'webpack-hot-middleware/client',
-    './index.js'
-  ],
+  entry: {
+     app: [ 'webpack-hot-middleware/client', './index.js'],
+     vendor : ['webpack-hot-middleware/client','react']
+  },
   output: {
     path:path.resolve(__dirname,'dist'),
-    filename: 'app.bundle.js',
+    filename: '[name].bundle.js',
     publicPath: '/static/'
   },
   module: {

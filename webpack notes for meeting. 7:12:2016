@@ -1,0 +1,11 @@
+webpack bundle for shared components
+and examine how commonchunks plugin bundle for shared components
+
+
+webpack to bundle tablet / mobile css
+webpack to bundle android / window / iOS css
+route wise bundling
+
+ExtractTextPlugin.extract({loader:['css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]']}),
+
+webpack comes with cache purging approach with hashing (problem mentioned by Aaditya regarding local cache expiration)
