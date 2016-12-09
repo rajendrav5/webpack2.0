@@ -15,11 +15,11 @@ import JCSelect from './components/JSelect';
 // ];
 //
 
-simport ProductList from './components/ProductList';
-//<ProductList />
+import ProductList from './components/ProductList';
+
 const renderer = () => {
 	render(
-		,
+		<ProductList />,
 		document.getElementById('root')
 	);
 };

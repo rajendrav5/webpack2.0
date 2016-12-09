@@ -1,0 +1,10 @@
+.gridWrapper{
+    width: 75%;
+    margin: 0 auto;
+}
+
+@media all and (max-device-width: 500px){
+    .gridWrapper{
+        width: 95%;
+    }
+}

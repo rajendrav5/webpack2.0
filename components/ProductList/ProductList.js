@@ -54,7 +54,7 @@ class ProductList extends Component{
                 price:"$9 - $14",
                 originalPrice: "$36",
                 id:8
-            },
+            }
         ]
     }
 
