@@ -2,11 +2,13 @@ var path = require('path')
 var webpack = require('webpack');
 var environ = require('./env.config');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var CommonChunksPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
 var JPlugins = {
   HMRE    : new webpack.HotModuleReplacementPlugin(),
   NOERR   : new webpack.NoErrorsPlugin(),
-  EXTTEXT : new ExtractTextPlugin({filename:'styles.css',disable:false,allChunks:true})
+  EXTTEXT : new ExtractTextPlugin({filename:'styles.css',disable:false,allChunks:true}),
+  CMNCHNK : new CommonChunksPlugin("common")
 };
 
 
@@ -60,6 +62,7 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     JPlugins.HMRE,
     JPlugins.NOERR,
+    JPlugins.CMNCHNK,
     new webpack.optimize.UglifyJsPlugin({
       compress: { warnings: true }
     }),
@@ -68,6 +71,7 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     JPlugins.HMRE,
     JPlugins.NOERR,
+    JPlugins.CMNCHNK,
     JPlugins.EXTTEXT,
     function() {
       this.plugin("done", function(stats) {
