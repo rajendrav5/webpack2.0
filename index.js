@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import JCSelect from './components/JSelect';
+import JCSelect from './jcp-shared/JSelect';
 //import App from './containers/App'
 //import configureStore from './store/configureStore'
 
@@ -14,12 +14,14 @@ import JCSelect from './components/JSelect';
 // 				{display:"Dallass",val:"dsasdf"}
 // ];
 //
-
-import ProductList from './components/ProductList';
+//
+ import ProductList from './components/ProductList';
+ import TempList from './components/TempList/TempList';
 
 const renderer = () => {
 	render(
-		<ProductList />,
+		<TempList />
+		,
 		document.getElementById('root')
 	);
 };

@@ -7,7 +7,22 @@
 </head>
 <body>
 	<div id="root"></div>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script src='/static/vendor.bundle.js'></script>
 	<script src="/static/app.bundle.js"></script>
 </body>
+<script type="text/javascript">
+	var data = {
+          "type": "EMAIL",
+          "value": "asdfasd@asdf.com"
+        }; 
+	axios.post('http://m.jcpenney.com/v2.1/optin', data)
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+  	console.log('errr');
+    console.log(error);
+  });
+</script>
 </html>

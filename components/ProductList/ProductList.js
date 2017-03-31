@@ -1,7 +1,7 @@
 import React , {Component, PropTypes} from 'react';
 import styles from './ProductList.css';
 
-import ProductCard from '../ProductCard';
+import ProductCard from '../../jcp-shared/ProductCard';
 
 class ProductList extends Component{
     constructor(){

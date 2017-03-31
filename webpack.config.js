@@ -1,81 +1,80 @@
 var path = require('path')
 var webpack = require('webpack');
-var environ = require('./env.config');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+let context = path.resolve('.');
 
-var JPlugins = {
-  HMRE    : new webpack.HotModuleReplacementPlugin(),
-  NOERR   : new webpack.NoErrorsPlugin(),
-  EXTTEXT : new ExtractTextPlugin({filename:'styles.css',disable:false,allChunks:true})
-};
+function isVendor(module) {
+    var userRequest = module.userRequest;
 
+    if (typeof userRequest !== 'string') {
+        return false;
+    }
 
-/**
-  Battle about Environment here.
-**/
-if(process.argv[2]){
-  var env = process.argv[2].split('=')[1];
-  if(env in environ.ENV){
-    environ.ENV[env] = true;
-  }else {
-    console.error('=>>>>> ..... Specified ENV does not exist, falling back to default mode DEV!!!!!');
-  }
-}else{
-  environ.ENV.DEV = true;
+    return userRequest.indexOf('node_modules') >= 0;
 }
 
 module.exports = {
-  entry: {
-     app: [ 'webpack-hot-middleware/client', './index.js'],
-     vendor : ['webpack-hot-middleware/client','react']
-  },
-  output: {
-    path:path.resolve(__dirname,'dist'),
-    filename: '[name].bundle.js',
-    publicPath: '/static/'
-  },
-  module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        include: [path.resolve(__dirname,'/')],
-        exclude: [path.resolve(__dirname,'/node_modules/')],
-        loaders: [ 'babel-loader' ]
-      },
-      {
-        test: /\.css?$/,
-        exclude: [path.resolve(__dirname,'/node_modules/')],
-        loader: ExtractTextPlugin.extract({loader:['css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]']}),
-        include: __dirname
-      }
+    devtool: '#source-map',
+    entry: {
+        app: [ 'webpack-hot-middleware/client', './src/app.js'],
+        //vendor : [not required unless specific entry point requirements come up, or have to generate separate vendor bundles for separate entries]
+    },
+    resolve:{
+        extensions:['.js','.jsx'],
+        //Alias are not forward compatible, corresponding consumers please remove your usage.
+        alias: {
+            molecules: path.resolve('.') + '/src/components/molecules',
+            atoms: path.resolve('.') + '/src/components/atoms',
+            organisms: path.resolve('.') + '/src/components/organisms',
+            styles: path.resolve('.') + '/src/components/styles',
+            mocks: path.resolve('.') + '/src/components/mocks',
+            pages: path.resolve('.') + '/src/components/pages',
+            api: path.resolve('.') + '/src/api',
+            sagas: path.resolve('.') + '/src/sagas'
+        }
+    },
+    output: {
+        path:path.resolve(context,'build'),
+        filename: '[name].bundle.js',
+        publicPath: '/build/'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.(js|jsx)$/,
+                include: path.join(context, './src'),
+                exclude: [path.resolve(context,'/node_modules/')],
+                loader: ['babel-loader']
+            },
+            {
+                test: /\.css?$/,
+                exclude: [path.resolve(context,'/node_modules/')],
+                include: path.join(context, './src'),
+                loader:ExtractTextPlugin.extract({
+                    fallBackLoader:"style-loader",
+                    loader: ['css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]','postcss-loader'],
+                })
+            }
+        ]
+    },
+    devServer:{
+        hot: true,
+        contentBase: path.resolve(context, 'build'),
+        publicPath: '/'
+    },
+    plugins:[
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin(),
+        new ExtractTextPlugin({filename:'[name].styles.css',disable:false,allChunks:true}),
+        new webpack.optimize.CommonsChunkPlugin({
+            name : 'vendor',
+            minChunks: function(module) {
+                return isVendor(module);
+            }
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'common'
+            //chunks:['entry1','entry2]
+        })
     ]
-  },
-  devtool:"inline-source-map",
-  devServer:{
-    hot: true,
-    contentBase: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
-  },
-  plugins: environ.ENV['PROD'] ? [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    JPlugins.HMRE,
-    JPlugins.NOERR,
-    new webpack.optimize.UglifyJsPlugin({
-      compress: { warnings: true }
-    }),
-    JPlugins.EXTTEXT
-  ] : [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    JPlugins.HMRE,
-    JPlugins.NOERR,
-    JPlugins.EXTTEXT,
-    function() {
-      this.plugin("done", function(stats) {
-        require("fs").writeFileSync(
-          path.join(__dirname, "", "stats.json"),
-          JSON.stringify(stats.toJson()));
-          //console.log(JSON.stringify(stats.toJson()));
-      });
-    }
-  ]
 }

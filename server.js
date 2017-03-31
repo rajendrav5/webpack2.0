@@ -1,70 +1,68 @@
-var webpack = require('webpack')
-var webpackDevMiddleware = require('webpack-dev-middleware')
-var webpackHotMiddleware = require('webpack-hot-middleware')
-var WPConfig = null;
-var config = require('./webpack.config');
+var path                    = require('path');
+var express                 = require('express');
+var webpack                 = require('webpack');
+var webpackConfig           = null;
+var webpackDevMiddleware    = require('webpack-dev-middleware');
+var webpackHotMiddleware    = require('webpack-hot-middleware');
+
+var proxy = require('express-http-proxy');
+var app         = express();
+var router      = express.Router();
+var __PROD__    = null;
+var __DEV__     = null;
+var __QA__      = null;
 
 /**
  * Environment discussions starts *
  **/
-var environ = require('./env.config');
-if(process.argv[2]){
-    var env = process.argv[2].split('=')[1];
-    if(env in environ.ENV){
-        environ.ENV[env] = true;
-    }else {
-        console.error('=>>>>> ..... Specified ENV does not exist, falling back to default mode DEV!!!!!');
+var commandArgs = process.argv.splice(2,process.argv.length-1);
+
+for(var i = 0;i < commandArgs.length;i++){
+    if(commandArgs[i].split('=')[0].indexOf('ENV') != -1){
+        console.log(commandArgs[i].split('=')[1]);
+        __DEV__     = commandArgs[i].split('=')[1] === 'DEV';
+        __PROD__    = commandArgs[i].split('=')[1] === 'PROD';
+        __QA__      = commandArgs[i].split('=')[1] === 'QA';
+    };
+}
+
+if(__PROD__)        {   webpackConfig = require('./Webpack/webp.prodconfig');
+    console.error('=>>>>> ..... Preparing a PROD build !!!!!');
+}
+else if(__QA__)     {}
+else if(__DEV__)    {   webpackConfig = require('./Webpack/webp.prodconfig');}
+else                {   webpackConfig = require('./Webpack/webp.devconfig');
+    console.error('=>>>>> ..... Specified ENV does not exist, falling back to default mode DEV!!!!!');
+}
+
+/*** Environment ***/
+
+var webpackCompiler = webpack(webpackConfig);
+
+router.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.use(router);
+
+app.use(webpackDevMiddleware(webpackCompiler, {
+    publicPath: webpackConfig.output.publicPath,
+    noInfo: true,
+    stats: {
+        colors: true
     }
-}else{
-    environ.ENV.DEV = true;
-}
-
-if(environ.ENV.DEV) {
-    WPConfig = require('./Webpack/webp.devconfig');
-}
-else if(environ.ENV.QA){
-}
-else if(environ.ENV.prod) {
-    WPConfig = require('./Webpack/webp.prodconfig');
-}else{
-    WPConfig = require('./Webpack/webp.devconfig');
-}
-
-/**
- * Environment discussion Ends Here *
- **/
+}));
+app.use(webpackHotMiddleware(webpackCompiler, {
+    log: console.log
+}));
 
 
-var app = new (require('express'))()
-var port = 6556;
-var compiler = webpack(config)
 
 
-app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: WPConfig.output.publicPath }))
-app.use(webpackHotMiddleware(compiler))
+app.listen(6556, function (err) {
+    if (err) {
+        return console.error(err);
+    }
 
-app.get("/", function(req, res) {
-	res.sendFile(__dirname + '/index.html')
-})
-app.get('/1.js',function(req, res){
-	console.log('this 1 is hit');
-	res.sendFile(__dirname + '/1.js')
-})
-
-// app.get('/2.js',function(req, res){
-// 	console.log('this 2 is hit');
-// 	res.sendFile(__dirname + '/2.js')
-// })
-
-// app.get('/3.js',function(req, res){
-// 	console.log('this 3 is hit');
-// 	res.sendFile(__dirname + '/3.js')
-// })
-
-app.listen(port, function(error) {
-  if (error) {
-    console.error(error)
-  } else {
-    console.info("==> 🌎  Listening on port %s. Open up http://localhost:%s/ in your browser.", port, port)
-  }
-})
+    console.log('Listening at http://localhost:6556/');
+});

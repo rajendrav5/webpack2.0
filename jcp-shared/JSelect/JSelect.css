@@ -1,0 +1,12 @@
+.test{
+	margin: 25px;
+
+	.first{
+		color:red;
+		border:red;
+	}
+
+	.second{
+		color:blue;
+	}
+}

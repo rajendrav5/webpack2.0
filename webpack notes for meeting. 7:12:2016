@@ -1,11 +1,48 @@
+
+implement hmre
+
+
+
+http://stackoverflow.com/questions/30329337/how-to-bundle-vendor-scripts-separately-and-require-them-as-needed-with-webpack
+https://github.com/webpack/webpack/tree/master/examples/multiple-commons-chunks
+
+questions :
+1. are we going with multiple repos for each page ?
+yes, because there is a lot of scope for flash pages, offer pages, and others . And each owner will take care of his repo and bundling.
+
+
+1. separate npm module for global css (normalise, colors, fonts, etc...) and consume for bundling in webpack -- not every repo will start with common components
+    Bootstrapping thus made easy with npm module.
+
+bundle for higher order components like route, vendor.
 webpack bundle for shared components
-and examine how commonchunks plugin bundle for shared components
 
 
+
+Done so far:
+1. Exploring to webpack 2.0
+2. Implementing Tree shaking
+3. Minification and de-duplication
+4. Integration of postcss with webpack2.0.
+5. Implemented seamless Hot module replacement.
+6. Separate webpacks for dev,qa, prod.
+7. Generating app.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+long run :
+webpack to declare multiple vendor list for multiple set of pages .
 webpack to bundle tablet / mobile css
 webpack to bundle android / window / iOS css
 route wise bundling
-
-ExtractTextPlugin.extract({loader:['css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]']}),
-
-webpack comes with cache purging approach with hashing (problem mentioned by Aaditya regarding local cache expiration)
