@@ -35,7 +35,7 @@ module.exports = {
                 include: path.join(__dirname, '../'),
                 loader:ExtractTextPlugin.extract({
                     fallBackLoader:"style-loader",
-                    loader: ['css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]','postcss-loader'],
+                    loader: ['css-loader?modules&importLoaders=1&localIdentName=[name]','postcss-loader'],
                 })
             }
         ]

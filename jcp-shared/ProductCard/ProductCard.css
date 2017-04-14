@@ -4,7 +4,7 @@ h6{
 }
 
 .galleryProduct{
-    display: inline-block;
+    display: block;
     width: 225px;
 }
 @media all and (max-device-width: 500px) {

@@ -1,10 +1,21 @@
 var path = require('path')
 var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+<<<<<<< HEAD
 let context = path.resolve('.');
 
 function isVendor(module) {
     var userRequest = module.userRequest;
+=======
+var CommonChunksPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+
+var JPlugins = {
+  HMRE    : new webpack.HotModuleReplacementPlugin(),
+  NOERR   : new webpack.NoErrorsPlugin(),
+  EXTTEXT : new ExtractTextPlugin({filename:'styles.css',disable:false,allChunks:true}),
+  CMNCHNK : new CommonChunksPlugin("common")
+};
+>>>>>>> 0c835221ecb4077a1094ec2b9b6c8e3f67856f85
 
     if (typeof userRequest !== 'string') {
         return false;
@@ -77,4 +88,38 @@ module.exports = {
             //chunks:['entry1','entry2]
         })
     ]
+<<<<<<< HEAD
+=======
+  },
+  devtool:"inline-source-map",
+  devServer:{
+    hot: true,
+    contentBase: path.resolve(__dirname, 'dist'),
+    publicPath: '/'
+  },
+  plugins: environ.ENV['PROD'] ? [
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    JPlugins.HMRE,
+    JPlugins.NOERR,
+    JPlugins.CMNCHNK,
+    new webpack.optimize.UglifyJsPlugin({
+      compress: { warnings: true }
+    }),
+    JPlugins.EXTTEXT
+  ] : [
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    JPlugins.HMRE,
+    JPlugins.NOERR,
+    JPlugins.CMNCHNK,
+    JPlugins.EXTTEXT,
+    function() {
+      this.plugin("done", function(stats) {
+        require("fs").writeFileSync(
+          path.join(__dirname, "", "stats.json"),
+          JSON.stringify(stats.toJson()));
+          //console.log(JSON.stringify(stats.toJson()));
+      });
+    }
+  ]
+>>>>>>> 0c835221ecb4077a1094ec2b9b6c8e3f67856f85
 }
